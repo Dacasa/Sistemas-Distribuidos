@@ -73,12 +73,12 @@ public class Partida {
 		char ori = barcos[bar].getOrientacion();
 		int co = barcos[bar].getColumnaInicial();
 		int fi = barcos[bar].getFilaInicial();
-		
+		//PRUEBA PARA GIT.BORRAR
 		int f=0; int c=0;
 		
 		for(int i=0 ; i<tam ; i++){
 			mar[f][c] = -3;
-			if(ori==H)
+			if(ori=='H')
 				c++;
 			else
 				f++;
