@@ -56,12 +56,13 @@ public class Partida {
 		if(res<0){			//Agua
 			return res;
 		}else{				//Toca barco
-			if(barcos[res].tocaBarco()){		//Se hunde el barco
+			if(barcos.get(res).tocaBarco()){		//Se hunde el barco, tocabarco aumenta tocadas.
 				hundirBarco(res);
 				this.quedan--;
 				return -3;
 			}else{								//Solo tocado
 				mar[f][c] = -2;
+				
 				return -2;
 			}
 		}
@@ -69,10 +70,10 @@ public class Partida {
     }
 	
 	private void hundirBarco(int bar){				//metodo auxiliar para hundir barcos, poner casillas -3
-		int tam = barcos[bar].getTamanyo();
-		char ori = barcos[bar].getOrientacion();
-		int co = barcos[bar].getColumnaInicial();
-		int fi = barcos[bar].getFilaInicial();
+		int tam = barcos.get(bar).getTamanyo();
+		char ori = barcos.get(bar).getOrientacion();
+		int co = barcos.get(bar).getColumnaInicial();
+		int fi = barcos.get(bar).getFilaInicial();
 		//PRUEBA PARA GIT.BORRAR
 		int f=0; int c=0;
 		
@@ -94,7 +95,7 @@ public class Partida {
 	 */	
 	public String getBarco(int idBarco) {
         // POR IMPLEMENTAR
-		return barcos[idBarco].toString();
+		return barcos.get(idBarco).toString();
 		//return null;
 	}
 	
@@ -106,7 +107,7 @@ public class Partida {
         // POR IMPLEMENTAR		REVISAR
 		String[] sol = new String[numBarcos];
 		for(int i=0 ; i<numBarcos ; i++){
-			sol[i] = barcos[i].toString();
+			sol[i] = barcos.get(i).toString();
 		}
 		return sol;
 		//return null;
