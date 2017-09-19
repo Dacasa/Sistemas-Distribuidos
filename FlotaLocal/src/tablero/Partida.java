@@ -76,14 +76,13 @@ public class Partida {
 		int fi = barcos.get(bar).getFilaInicial();
 		//PRUEBA PARA GIT.
 		//otra
-		int f=0; int c=0;
 		
 		for(int i=0 ; i<tam ; i++){
-			mar[f][c] = -3;
+			mar[fi][co] = -3;
 			if(ori=='H')
-				c++;
+				co++;
 			else
-				f++;
+				fi++;
 		}
 	}
     
