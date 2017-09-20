@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
@@ -84,6 +85,25 @@ public class Juego {
 		 */
 		private void anyadeMenu() {
             // POR IMPLEMENTAR
+			// Creamos el menu, añadimos los desplegables y les asignamos un listener
+			JMenuBar menuBar = new JMenuBar();
+			JMenu menu = new JMenu("Menu");
+			menu.setMnemonic(KeyEvent.VK_A);
+			menuBar.add(menu);
+			JMenuItem menuItem = new JMenuItem("Mostrar Solucion");
+			menuItem.setActionCommand("Mostrar Solucion");
+			menuItem.addActionListener(new MenuListener());
+			menu.add(menuItem);
+			menuItem = new JMenuItem("Nueva Partida");
+			menuItem.setActionCommand("Nueva Partida");
+			menuItem.addActionListener(new MenuListener());
+			menu.add(menuItem);
+			menuItem = new JMenuItem("Salir");
+			menuItem.setActionCommand("Salir");
+			menuItem.addActionListener(new MenuListener());
+			menu.add(menuItem);
+			frame.setJMenuBar(menuBar);
+			
 		} // end anyadeMenu
 
 		/**
@@ -93,7 +113,38 @@ public class Juego {
 		 * @param nc	numero de columnas
 		 */
 		private void anyadeGrid(int nf, int nc) {
-            // POR IMPLEMENTAR
+			//JPanes
+			//Primera linea de numeros
+			JPanel tablero = new JPanel();
+			tablero.setLayout(new GridLayout(nf+1,nc+2));
+			JLabel etiqueta;
+			JButton boton;
+			this.buttons = new JButton[nf][nc];
+			etiqueta = new JLabel("");
+			tablero.add(etiqueta);
+			for(int i=0; i<nc;i++){
+				etiqueta = new JLabel(String.format("%d",i+1),SwingConstants.CENTER);
+				tablero.add(etiqueta);
+			}
+			etiqueta = new JLabel("");
+			tablero.add(etiqueta);
+			
+			//Etiquetas laterales y botones
+			for(int i=0; i<nf; i++){
+				etiqueta = new JLabel(String.format("%c", i+65),SwingConstants.CENTER);
+				tablero.add(etiqueta);
+				for(int j=0; j<nc; j++){
+					//Botones
+					boton = new JButton();
+					boton.setActionCommand(String.format("%d-%d",i,j));
+					boton.addActionListener(new ButtonListener());
+					buttons[i][j] = boton;
+					tablero.add(boton);
+				}
+				etiqueta = new JLabel(String.format("%c", i+65),SwingConstants.CENTER);
+				tablero.add(etiqueta);
+			}
+			frame.getContentPane().add(tablero, BorderLayout.CENTER);
 		} // end anyadeGrid
 
 
@@ -122,6 +173,29 @@ public class Juego {
 		 */
 		public void muestraSolucion() {
             // POR IMPLEMENTAR
+			//Cambia el color de todos los botones a gris, y luego coge la solucion de partida y pinta los barcos de rosa
+			for(JButton[] fila : buttons){
+				for(JButton boton : fila){
+					pintaBoton(boton, new Color(192, 192, 192));
+				}
+			}
+			String[] stringSolucion = partida.getSolucion();
+			for(String cadenaBarco : stringSolucion){
+				String[] separarCadena = cadenaBarco.split("#");
+				int fila = Integer.parseInt(separarCadena[0]);
+				int columna = Integer.parseInt(separarCadena[1]);
+				String orientacion = separarCadena[2];
+				int tamano = Integer.parseInt(separarCadena[3]);
+				for(int i=0; i<tamano; i++){
+					if(orientacion == "H"){
+						pintaBoton(buttons[fila][columna+i], new Color(255, 175, 175));
+					}
+					if(orientacion == "V"){
+						pintaBoton(buttons[fila+i][columna], new Color(255, 175, 175));
+					}
+				}
+			}
+			
 		} // end muestraSolucion
 
 
@@ -132,6 +206,22 @@ public class Juego {
 		 */
 		public void pintaBarcoHundido(String cadenaBarco) {
             // POR IMPLEMENTAR
+			// Recibe la cadena del barco y lo pinta de rojo
+			String[] separarCadena = cadenaBarco.split("#");
+			int fila = Integer.parseInt(separarCadena[0]);
+			int columna = Integer.parseInt(separarCadena[1]);
+			String orientacion = separarCadena[2];
+			int tamano = Integer.parseInt(separarCadena[3]);
+			for(int i=0; i<tamano; i++){
+				if(orientacion == "H"){
+					pintaBoton(buttons[fila][columna+i], new Color(255, 0, 0));
+				}
+				if(orientacion == "V"){
+					pintaBoton(buttons[fila+i][columna], new Color(255, 0, 0));
+				}
+				
+			}
+			
 		} // end pintaBarcoHundido
 
 		/**
