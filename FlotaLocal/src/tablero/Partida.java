@@ -53,13 +53,14 @@ public class Partida {
         // POR IMPLEMENTAR   REVISAR!
 		this.disparos++;
 		int res = mar[f][c];
-		if(res<0){			//Agua
+		if (res<-2) return -3;
+		if(res==-1){			//Agua
 			return res;
 		}else{				//Toca barco
 			if(barcos.get(res).tocaBarco()){		//Se hunde el barco, tocabarco aumenta tocadas.
 				hundirBarco(res);
 				this.quedan--;
-				return -3;
+				return res;
 			}else{								//Solo tocado
 				mar[f][c] = -2;
 				
@@ -84,6 +85,7 @@ public class Partida {
 			else
 				fi++;
 		}
+		quedan--;
 	}
     
 
@@ -108,6 +110,7 @@ public class Partida {
 		String[] sol = new String[numBarcos];
 		for(int i=0 ; i<numBarcos ; i++){
 			sol[i] = barcos.get(i).toString();
+			
 		}
 		return sol;
 		//return null;

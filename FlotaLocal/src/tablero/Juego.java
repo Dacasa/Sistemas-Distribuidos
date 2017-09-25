@@ -176,7 +176,8 @@ public class Juego {
 			//Cambia el color de todos los botones a gris, y luego coge la solucion de partida y pinta los barcos de rosa
 			for(JButton[] fila : buttons){
 				for(JButton boton : fila){
-					pintaBoton(boton, new Color(192, 192, 192));
+					pintaBoton(boton, Color.cyan);
+					quedan=0;
 				}
 			}
 			String[] stringSolucion = partida.getSolucion();
@@ -187,11 +188,11 @@ public class Juego {
 				String orientacion = separarCadena[2];
 				int tamano = Integer.parseInt(separarCadena[3]);
 				for(int i=0; i<tamano; i++){
-					if(orientacion == "H"){
-						pintaBoton(buttons[fila][columna+i], new Color(255, 175, 175));
+					if(orientacion.equals("H")){
+						pintaBoton(buttons[fila][columna+i], Color.MAGENTA);
 					}
-					if(orientacion == "V"){
-						pintaBoton(buttons[fila+i][columna], new Color(255, 175, 175));
+					if(orientacion.equals("V")){
+						pintaBoton(buttons[fila+i][columna], Color.MAGENTA);
 					}
 				}
 			}
@@ -213,11 +214,15 @@ public class Juego {
 			String orientacion = separarCadena[2];
 			int tamano = Integer.parseInt(separarCadena[3]);
 			for(int i=0; i<tamano; i++){
-				if(orientacion == "H"){
-					pintaBoton(buttons[fila][columna+i], new Color(255, 0, 0));
+
+				if(orientacion.equals("H")){
+
+					pintaBoton(buttons[fila][columna+i], Color.RED);
 				}
-				if(orientacion == "V"){
-					pintaBoton(buttons[fila+i][columna], new Color(255, 0, 0));
+				if(orientacion.equals("V")){
+					
+					pintaBoton(buttons[fila+i][columna], Color.RED);
+	
 				}
 				
 			}
@@ -272,6 +277,19 @@ public class Juego {
 		@Override
 		public void actionPerformed(ActionEvent e) {
             // POR IMPLEMENTAR
+			switch (e.getActionCommand()) {
+			case "Mostrar Solucion":
+				guiTablero.muestraSolucion();
+				break;
+			case "Nueva Partida":
+				guiTablero.limpiaTablero();
+				quedan = NUMBARCOS;
+				partida = new Partida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
+				break;
+			case "Salir":
+				guiTablero.liberaRecursos();
+				break;
+			}
 		} // end actionPerformed
 
 	} // end class MenuListener
@@ -287,10 +305,35 @@ public class Juego {
 	 * de los componentes, apoyandose en los metodos putClientProperty y getClientProperty
 	 */
 	private class ButtonListener implements ActionListener {
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-            // POR IMPLEMENTAR
+           
+			// POR IMPLEMENTAR
+			if(quedan==0) return;
+			int i, j;
+			String text = e.getActionCommand();
+			i= Integer.parseInt(text.substring(0,1));
+			j= Integer.parseInt(text.substring(2,3));
+			JButton boton = guiTablero.buttons[i][j];
+			//System.out.println(text);
+			int res = partida.pruebaCasilla(i, j);
+			//System.out.println(res);
+			if(res == -1) {//agua
+				guiTablero.pintaBoton(boton, Color.cyan);
+			}else if(res==-2) {//tocado
+				guiTablero.pintaBoton(boton, Color.YELLOW);
+			}else if(res>=0) {//hundido
+	
+				guiTablero.pintaBoton(boton, Color.YELLOW);
+				guiTablero.pintaBarcoHundido(partida.getBarco(res));
+				quedan--;
+			}
+			disparos++;
+			guiTablero.cambiaEstado("Intentos: " + disparos + "    Barcos restantes: " + quedan);
+			if(quedan==0) {
+				guiTablero.cambiaEstado("GAME OVER en " + disparos + " disparos");
+			}
         } // end actionPerformed
 
 	} // end class ButtonListener
