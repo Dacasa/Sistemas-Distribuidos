@@ -284,6 +284,7 @@ public class Juego {
 			case "Nueva Partida":
 				guiTablero.limpiaTablero();
 				quedan = NUMBARCOS;
+				disparos = 0;
 				partida = new Partida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
 				break;
 			case "Salir":
