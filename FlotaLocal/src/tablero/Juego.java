@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
+import partida.Partida;
+
 public class Juego {
 
 	/**
@@ -85,7 +87,7 @@ public class Juego {
 		 */
 		private void anyadeMenu() {
             // POR IMPLEMENTAR
-			// Creamos el menu, añadimos los desplegables y les asignamos un listener
+			// Creamos el menu, aï¿½adimos los desplegables y les asignamos un listener
 			JMenuBar menuBar = new JMenuBar();
 			JMenu menu = new JMenu("Menu");
 			menu.setMnemonic(KeyEvent.VK_A);

@@ -1,4 +1,4 @@
-package tablero;
+package partida;
 
 public class Barco {	
 	/**

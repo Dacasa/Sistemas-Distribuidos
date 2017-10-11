@@ -1,4 +1,4 @@
-package tablero;
+package partida;
 
 import java.util.Random;
 import java.util.Vector;
