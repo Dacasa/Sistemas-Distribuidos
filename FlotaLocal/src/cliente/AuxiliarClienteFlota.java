@@ -27,8 +27,10 @@ public class AuxiliarClienteFlota {
                      String portNum) throws SocketException,
                      UnknownHostException, IOException {
 	   
-  	   // Por implementar	   
-	   
+	   // IMPLEMENTADO
+	   this.serverHost = InetAddress.getByName(hostName);
+	   this.serverPort = Integer.parseInt(portNum);
+	   this.mySocket = new MyStreamSocket(this.serverHost, this.serverPort);
    } // end constructor
    
    /**
@@ -36,10 +38,9 @@ public class AuxiliarClienteFlota {
 	 * con el formato: "0"
 	 * @throws	IOException
 	 */
-   public void fin( ) {
-	   
-	   // Por implementar
-	   
+   public void fin( ) throws IOException{
+	   // IMPLEMENTADO
+	   mySocket.sendMessage("O");
    } // end fin 
   
    /**
@@ -51,9 +52,8 @@ public class AuxiliarClienteFlota {
     * @throws IOException
     */
    public void nuevaPartida(int nf, int nc, int nb)  throws IOException {
-	   
-	   // Por implementar
-	   
+	   // IMPLEMENTADO
+	   mySocket.sendMessage(String.format("1#%d#%d#%d",nf,nc,nb));
    } // end nuevaPartida
 
    /**
@@ -66,10 +66,10 @@ public class AuxiliarClienteFlota {
     * @throws IOException
     */
    public int pruebaCasilla(int f, int c) throws IOException {
-	   
-	   // Por implementar
-	   return 0; // cambiar por el retorno correcto
-	   
+	   // IMPLEMENTADO
+	   mySocket.sendMessage(String.format("2#%d#%d",f,c));
+	   int respuesta = Integer.parseInt(mySocket.receiveMessage());
+	   return respuesta; // cambiar por el retorno correcto
     } // end getCasilla
    
    /**
@@ -81,10 +81,9 @@ public class AuxiliarClienteFlota {
     * @throws IOException
     */
    public String getBarco(int idBarco) throws IOException {
-	   
-	   // Por implementar
-	   return null; // cambiar por el retorno correcto
-	   
+	   // IMPLEMENTADO
+	   mySocket.sendMessage(String.format("3#%d", idBarco));
+	   return mySocket.receiveMessage(); 
     } // end getCasilla
    
    /**
@@ -95,10 +94,14 @@ public class AuxiliarClienteFlota {
     * @throws IOException
     */
    public String[] getSolucion() throws IOException {
-	   
-	   // Por implementar
-	   return null; // cambiar por el retorno correcto
-	   
+	   // IMPLEMENTADO
+	   mySocket.sendMessage("4");
+	   int nBarcos= Integer.parseInt(mySocket.receiveMessage());
+	   String[] respuesta = new String[nBarcos];
+	   for(int i=0; i<nBarcos;i++){
+		   respuesta[i] = mySocket.receiveMessage();
+	   }
+	   return respuesta;
     } // end getSolucion
    
 
