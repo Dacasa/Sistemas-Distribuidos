@@ -290,14 +290,23 @@ public class ClienteFlotaSockets {
             // POR IMPLEMENTAR
 			switch (e.getActionCommand()) {
 			case "Mostrar Solucion":
-				guiTablero.muestraSolucion();
+				try {
+					guiTablero.muestraSolucion();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 				break;
 			case "Nueva Partida":
 				guiTablero.limpiaTablero();
 				quedan = NUMBARCOS;
 				disparos = 0;
-				//partida = new Partida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
-				partida = new AuxiliarClienteFlota();
+				try {
+					partida.nuevaPartida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				break;
 			case "Salir":
 				guiTablero.liberaRecursos();
