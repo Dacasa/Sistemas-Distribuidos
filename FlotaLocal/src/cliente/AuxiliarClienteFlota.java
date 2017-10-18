@@ -41,6 +41,7 @@ public class AuxiliarClienteFlota {
    public void fin( ) throws IOException{
 	   // IMPLEMENTADO
 	   mySocket.sendMessage("O");
+	   mySocket.close();
    } // end fin 
   
    /**
