@@ -25,7 +25,6 @@ class HiloServidorFlota implements Runnable {
    HiloServidorFlota(MyStreamSocket myDataSocket) {
       // Por implementar
 	   this.myDataSocket = myDataSocket;
-	   run();
    }
  
    /**
@@ -46,6 +45,7 @@ class HiloServidorFlota implements Runnable {
              switch (operacion) {
              case 0:  // fin de conexión con el cliente
             	 done = true;
+            	 myDataSocket.close();
             	 break;
 
              case 1: { // Crea nueva partida
