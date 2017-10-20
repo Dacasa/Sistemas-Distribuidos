@@ -131,6 +131,7 @@ public class ClienteFlotaSockets {
 			tablero.setLayout(new GridLayout(nf+1,nc+2));
 			JLabel etiqueta;
 			JButton boton;
+			ButtonListener escuchador = new ButtonListener();
 			this.buttons = new JButton[nf][nc];
 			etiqueta = new JLabel("");
 			tablero.add(etiqueta);
@@ -149,7 +150,7 @@ public class ClienteFlotaSockets {
 					//Botones
 					boton = new JButton();
 					boton.setActionCommand(String.format("%d-%d",i,j));
-					boton.addActionListener(new ButtonListener());
+					boton.addActionListener(escuchador);
 					buttons[i][j] = boton;
 					tablero.add(boton);
 				}
