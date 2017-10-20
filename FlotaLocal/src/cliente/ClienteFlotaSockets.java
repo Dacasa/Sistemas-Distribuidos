@@ -1,11 +1,11 @@
 package cliente;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.ItemEvent;
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -164,8 +164,11 @@ public class ClienteFlotaSockets {
 				for(int j=0; j<nc; j++){
 					//Botones
 					boton = new JButton();
-					boton.setActionCommand(String.format("%d-%d",i,j));
+					//boton.setActionCommand(String.format("%d-%d",i,j));
 					boton.addActionListener(escuchador);
+					boton.putClientProperty("fil", i);
+					boton.putClientProperty("col", j);
+					
 					buttons[i][j] = boton;
 					tablero.add(boton);
 				}
@@ -358,10 +361,13 @@ public class ClienteFlotaSockets {
 			// POR IMPLEMENTAR
 			if(quedan==0) return;
 			int i, j;
-			String text = e.getActionCommand();
-			i= Integer.parseInt(text.substring(0,1));
-			j= Integer.parseInt(text.substring(2,3));
-			JButton boton = guiTablero.buttons[i][j];
+			//String text = e.getActionCommand();
+			//i= Integer.parseInt(text.substring(0,1));
+			//j= Integer.parseInt(text.substring(2,3));
+			JButton boton = (JButton)e.getSource();	// Obtenemos el boton
+			i =  (int) boton.getClientProperty("fil");
+			j =  (int) boton.getClientProperty("col");
+			//JButton boton = guiTablero.buttons[i][j];
 			//System.out.println(text);
 			int res;
 			try {
