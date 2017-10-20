@@ -36,18 +36,20 @@ public class ClienteFlotaSockets {
 	/**
 	 * Programa principal. Crea y lanza un nuevo juego
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		ClienteFlotaSockets cliente = new ClienteFlotaSockets();
 		cliente.ejecuta();
 	} // end main
 
 	/**
 	 * Lanza una nueva hebra que crea la primera partida y dibuja la interfaz grafica: tablero
+	 * @throws IOException 
 	 */
-	private void ejecuta() {
+	private void ejecuta() throws IOException {
 		// Instancia la primera partida
-		partida = new AuxiliarClienteFlota();
+		partida = new AuxiliarClienteFlota("localhost", "8034");
 		partida.nuevaPartida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

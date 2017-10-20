@@ -1,8 +1,4 @@
-/tablero/
-/client/
-/server/
-/common/
-/partida/
-/comun/
 /cliente/
+/comun/
+/partida/
 /servidor/
