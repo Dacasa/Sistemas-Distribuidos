@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -78,7 +80,19 @@ public class ClienteFlotaSockets {
 			this.numFilas = numFilas;
 			this.numColumnas = numColumnas;
 			frame = new JFrame();
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.addWindowListener(new  WindowAdapter(){
+				@Override
+				public void windowClosing(WindowEvent e){
+					try {
+						partida.fin();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					System.exit(0);
+				}
+			});
 		}
 
 		/**
@@ -99,20 +113,21 @@ public class ClienteFlotaSockets {
             // POR IMPLEMENTAR
 			// Creamos el menu, a�adimos los desplegables y les asignamos un listener
 			JMenuBar menuBar = new JMenuBar();
+			MenuListener escuchador = new MenuListener();
 			JMenu menu = new JMenu("Menu");
 			menu.setMnemonic(KeyEvent.VK_A);
 			menuBar.add(menu);
 			JMenuItem menuItem = new JMenuItem("Mostrar Solucion");
 			menuItem.setActionCommand("Mostrar Solucion");
-			menuItem.addActionListener(new MenuListener());
+			menuItem.addActionListener(escuchador);
 			menu.add(menuItem);
 			menuItem = new JMenuItem("Nueva Partida");
 			menuItem.setActionCommand("Nueva Partida");
-			menuItem.addActionListener(new MenuListener());
+			menuItem.addActionListener(escuchador);
 			menu.add(menuItem);
 			menuItem = new JMenuItem("Salir");
 			menuItem.setActionCommand("Salir");
-			menuItem.addActionListener(new MenuListener());
+			menuItem.addActionListener(escuchador);
 			menu.add(menuItem);
 			frame.setJMenuBar(menuBar);
 			
@@ -375,6 +390,5 @@ public class ClienteFlotaSockets {
         } // end actionPerformed
 
 	} // end class ButtonListener
-
 
 }

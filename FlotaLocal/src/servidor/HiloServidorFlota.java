@@ -46,6 +46,7 @@ class HiloServidorFlota implements Runnable {
              case 0:  // fin de conexión con el cliente
             	 done = true;
             	 myDataSocket.close();
+            	 System.out.println("Conexion terminada");
             	 break;
 
              case 1: { // Crea nueva partida
