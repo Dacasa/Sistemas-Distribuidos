@@ -312,6 +312,12 @@ public class ClienteFlotaSockets {
 				}
 				break;
 			case "Salir":
+				try {
+					partida.fin();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				guiTablero.liberaRecursos();
 				break;
 			}
