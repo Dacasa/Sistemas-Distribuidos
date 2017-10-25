@@ -1,8 +1,6 @@
-package servidor;
+package tablero;
 
 import java.net.ServerSocket;
-
-import comun.MyStreamSocket;
 
 /**
  * Este modulo contiene la logica de aplicacion del servidor del juego Hundir la flota

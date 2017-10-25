@@ -1,4 +1,4 @@
-package comun;
+package tablero;
 
 import java.net.*;
 import java.io.*;

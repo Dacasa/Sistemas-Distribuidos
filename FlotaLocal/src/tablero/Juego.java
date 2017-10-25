@@ -9,8 +9,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-import partida.Partida;
-
 public class Juego {
 
 	/**

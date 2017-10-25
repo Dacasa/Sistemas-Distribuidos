@@ -1,11 +1,9 @@
-package servidor;
+package tablero;
 
 
 import java.io.IOException;
 import java.net.SocketException;
 
-import partida.*;
-import comun.MyStreamSocket;
 
 /**
  * Clase ejecutada por cada hebra encargada de servir a un cliente del juego Hundir la flota.
