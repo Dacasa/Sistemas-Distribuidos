@@ -1,8 +1,8 @@
-package cliente;
+package client;
 
 import java.rmi.*;
 
-import comun.HelloInterface;
+import common.HelloInterface;
 
 /**
  * This class represents the object client for a

@@ -1,9 +1,10 @@
 
 package tablero;
 import java.net.*;
-import java.io.*;
 
-import comun.*;
+import common.*;
+
+import java.io.*;
 
 /**
  * Esta clase implementa el intercambio de mensajes

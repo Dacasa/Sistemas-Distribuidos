@@ -1,4 +1,4 @@
-package comun;
+package common;
 
 // A simple RMI interface file - M. Liu
 import java.rmi.*;

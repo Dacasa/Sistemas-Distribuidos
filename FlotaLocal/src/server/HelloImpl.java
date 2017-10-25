@@ -1,9 +1,9 @@
-package servidor;
+package server;
 
 import java.rmi.*;
 import java.rmi.server.*;
 
-import comun.HelloInterface;
+import common.HelloInterface;
 
 /**
  * This class implements the remote interface HelloInterface.
