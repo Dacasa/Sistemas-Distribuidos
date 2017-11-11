@@ -8,7 +8,7 @@ import common.IntServidorPartidasRMI;
 
 public class ImplServidorPartidasRMI implements IntServidorPartidasRMI{
 	private Partida partida;
-	private Barco barco;
+	//private Barco barco;
 
 	@Override
 	public void nuevaPartida(int filas, int columnas) throws RemoteException {

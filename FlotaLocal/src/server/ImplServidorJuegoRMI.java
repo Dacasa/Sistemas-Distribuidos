@@ -12,13 +12,18 @@ import common.IntServidorPartidasRMI;
 
 public class ImplServidorJuegoRMI extends UnicastRemoteObject implements IntServidorJuegoRMI{
 
+	public ImplServidorJuegoRMI() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public IntServidorPartidasRMI nuevoServidorPartidas() throws RemoteException {
 		// TODO Auto-generated method stub
 		try {
 			String registryURL = "rmi://localhost:1099/barcos";
-			IntServidorPartidasRMI partida = (IntServidorPartidasRMI)Naming.lookup(registryURL);
-			return partida;
+			IntServidorPartidasRMI servidorPartida = (IntServidorPartidasRMI)Naming.lookup(registryURL);
+			return servidorPartida;
 		}catch (Exception e){
 			System.out.println("Exception: Error al crear la partida");
 		}
