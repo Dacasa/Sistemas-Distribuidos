@@ -1,18 +1,28 @@
 package server;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 import common.IntCallbackCliente;
 import common.IntServidorJuegoRMI;
 import common.IntServidorPartidasRMI;
 
-public class ImplServidorJuegoRMI implements IntServidorJuegoRMI{
+public class ImplServidorJuegoRMI extends UnicastRemoteObject implements IntServidorJuegoRMI{
 
 	@Override
 	public IntServidorPartidasRMI nuevoServidorPartidas() throws RemoteException {
 		// TODO Auto-generated method stub
-		
-		return null;
+		try {
+			String registryURL = "rmi://localhost:1099/barcos";
+			IntServidorPartidasRMI partida = (IntServidorPartidasRMI)Naming.lookup(registryURL);
+			return partida;
+		}catch (Exception e){
+			System.out.println("Exception: Error al crear la partida");
+		}
+		return null ;
 	}
 
 	@Override
