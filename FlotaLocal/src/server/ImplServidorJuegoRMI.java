@@ -6,12 +6,15 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import common.IntCallbackCliente;
+import common.IntClienteCallback;
+import common.IntClienteCallback;
 import common.IntServidorJuegoRMI;
 import common.IntServidorPartidasRMI;
 
 public class ImplServidorJuegoRMI extends UnicastRemoteObject implements IntServidorJuegoRMI{
 
+	IntServidorPartidasRMI servidorPartida;
+	
 	public ImplServidorJuegoRMI() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
@@ -20,18 +23,12 @@ public class ImplServidorJuegoRMI extends UnicastRemoteObject implements IntServ
 	@Override
 	public IntServidorPartidasRMI nuevoServidorPartidas() throws RemoteException {
 		// TODO Auto-generated method stub
-		try {
-			String registryURL = "rmi://localhost:1099/barcos";
-			IntServidorPartidasRMI servidorPartida = (IntServidorPartidasRMI)Naming.lookup(registryURL);
-			return servidorPartida;
-		}catch (Exception e){
-			System.out.println("Exception: Error al crear la partida");
-		}
-		return null ;
+		
+		return new ImplServidorPartidasRMI() ;
 	}
 
 	@Override
-	public boolean proponPartida(String nombreJugador, IntCallbackCliente callbackClientObject) throws RemoteException {
+	public boolean proponPartida(String nombreJugador, IntClienteCallback callbackClientObject) throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
 	}

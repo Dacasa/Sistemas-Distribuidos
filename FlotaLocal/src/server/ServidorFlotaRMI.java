@@ -17,15 +17,15 @@ public class ServidorFlotaRMI {
 
 		         startRegistry(1099);
 		         ImplServidorJuegoRMI exportedObj = new ImplServidorJuegoRMI();
-		         String registryURL = "rmi://localhost:1099/hello";
+		         String registryURL = "rmi://localhost:1099/barcos";
 		         Naming.rebind(registryURL, exportedObj);
 		         System.out.println("Server registered. Registry contains:");
 		         // list names currently in the registry
 		         listRegistry(registryURL);
-		         System.out.println("Hello Server ready.");
+		         System.out.println("Flota Server ready.");
 		      }// end try
 		      catch (Exception re) {
-		         System.out.println("Exception in HelloServer.main: " + re);
+		         System.out.println("Exception in FlotaServer.main: " + re);
 		      } // end catch
 		  } // end main
 

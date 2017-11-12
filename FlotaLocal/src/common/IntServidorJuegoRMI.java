@@ -19,7 +19,7 @@ public interface IntServidorJuegoRMI extends Remote {
  	 * @return							valor logico indicando si se ha podido anyadir el jugador al registro
  	 * @throws	RemoteException
  	 */
-   public boolean proponPartida( String nombreJugador, IntCallbackCliente callbackClientObject) throws RemoteException;
+   public boolean proponPartida( String nombreJugador, IntClienteCallback callbackClientObject) throws RemoteException;
    
    
    /**

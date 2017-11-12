@@ -43,7 +43,8 @@ public class ClienteFlotaRMI {
 		try {      
 		      // start a security manager - this is needed if stub
 		      // downloading is in use for this application.
-		      System.setSecurityManager(new SecurityManager());
+			 // if(System.getSecurityManager()==null)
+				  System.setSecurityManager(new SecurityManager());
 
 		      String registryURL = "rmi://localhost:1099/barcos";  
 		      // find the remote object and cast it to an 
@@ -52,12 +53,13 @@ public class ClienteFlotaRMI {
 		      System.out.println("Lookup completed " );
 		      // invoke the remote method
 		      partida = servidorJuego.nuevoServidorPartidas();
+		      partida.nuevaPartida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
 		    } // end try 
 		    catch (Exception e) {
 		      System.out.println("Exception in HelloClient: " + e);
 		    } 
 		 
-		 partida.nuevaPartida(NUMFILAS, NUMCOLUMNAS);
+		 
 		 SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -310,11 +312,12 @@ public class ClienteFlotaRMI {
 				quedan = NUMBARCOS;
 				disparos = 0;
 				try {
-					partida =servidorJuego.nuevoServidorPartidas();
+					partida.nuevaPartida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 				break;
 			case "Salir":
 				guiTablero.liberaRecursos();

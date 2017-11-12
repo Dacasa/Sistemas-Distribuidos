@@ -1,18 +1,27 @@
 package server;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 import tablero.Barco;
 import tablero.Partida;
 
 import common.IntServidorPartidasRMI;
 
-public class ImplServidorPartidasRMI implements IntServidorPartidasRMI{
-	private Partida partida;
+public class ImplServidorPartidasRMI extends UnicastRemoteObject implements IntServidorPartidasRMI{
+	/**
+	 * 
+	 */
+	
+	Partida partida;
 	//private Barco barco;
+	public ImplServidorPartidasRMI() throws RemoteException{
+		super();
+	}
 
 	@Override
-	public void nuevaPartida(int filas, int columnas) throws RemoteException {
-		this.partida = new Partida(filas, columnas, 6);
+	public void nuevaPartida(int filas, int columnas, int barcos) throws RemoteException {
+		partida = new Partida(filas, columnas, barcos);
 		
 	}
 
