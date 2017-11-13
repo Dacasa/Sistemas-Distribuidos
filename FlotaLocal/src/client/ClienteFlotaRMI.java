@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,6 +33,11 @@ public class ClienteFlotaRMI {
 	private  IntServidorPartidasRMI partida = null;
 	private IntServidorJuegoRMI servidorJuego;
 	private int quedan = NUMBARCOS, disparos = 0;
+	private ImplClienteCallback callback;
+	
+	private boolean jugando;
+	private Scanner scanner;
+	private String jugador;
 	
 	public static void main(String[] args) throws RemoteException {
 		ClienteFlotaRMI cliente = new ClienteFlotaRMI();
@@ -43,8 +49,12 @@ public class ClienteFlotaRMI {
 		try {      
 		      // start a security manager - this is needed if stub
 		      // downloading is in use for this application.
-			 // if(System.getSecurityManager()==null)
+			  if(System.getSecurityManager()==null)
 				  System.setSecurityManager(new SecurityManager());
+				  
+				scanner = new Scanner(System.in);
+				System.out.println("Nombre de usuario:");
+				jugador = scanner.nextLine();
 
 		      String registryURL = "rmi://localhost:1099/barcos";  
 		      // find the remote object and cast it to an 
@@ -54,12 +64,14 @@ public class ClienteFlotaRMI {
 		      // invoke the remote method
 		      partida = servidorJuego.nuevoServidorPartidas();
 		      partida.nuevaPartida(NUMFILAS, NUMCOLUMNAS, NUMBARCOS);
+		      
+		      callback = new ImplClienteCallback();
 		    } // end try 
 		    catch (Exception e) {
 		      System.out.println("Exception in HelloClient: " + e);
 		    } 
 		 
-		 
+		 jugando = true;
 		 SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -85,7 +97,7 @@ public class ClienteFlotaRMI {
 		GuiTablero(int numFilas, int numColumnas) {
 			this.numFilas = numFilas;
 			this.numColumnas = numColumnas;
-			frame = new JFrame();
+			frame = new JFrame(jugador);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 		}
 
@@ -123,6 +135,35 @@ public class ClienteFlotaRMI {
 			menuItem.addActionListener(new MenuListener());
 			menu.add(menuItem);
 			frame.setJMenuBar(menuBar);
+			
+			
+			menu = new JMenu("Multijugador");
+			menuBar.add(menu);
+			
+			MultijugadorListener listenerMulti = new MultijugadorListener();
+			
+			JMenuItem propon = new JMenuItem("Proponer partida"); //Se crea el boton Proponer partida
+			propon.setActionCommand("propon");
+			propon.addActionListener(listenerMulti);
+			
+			JMenuItem borra = new JMenuItem("Borrar partida");	//Se crea el boton borrar partida
+			borra.setActionCommand("borrar");
+			borra.addActionListener(listenerMulti);
+			
+			JMenuItem lista = new JMenuItem("listar partidas"); //Se crea el boton Listar partidas
+			lista.setActionCommand("lista");
+			lista.addActionListener(listenerMulti);
+			
+			JMenuItem acepta = new JMenuItem("aceptar partida");	//Se crea el boton Aceptar partida
+			acepta.setActionCommand("aceptar");
+			acepta.addActionListener(listenerMulti);
+			
+			menu.add(propon);
+			menu.add(borra);
+			menu.add(lista);
+			menu.add(acepta);
+			
+			frame.add(menuBar,BorderLayout.NORTH);
 			
 		} // end anyadeMenu
 
@@ -195,6 +236,7 @@ public class ClienteFlotaRMI {
 		public void muestraSolucion() throws RemoteException {
             // POR IMPLEMENTAR
 			//Cambia el color de todos los botones a gris, y luego coge la solucion de partida y pinta los barcos de rosa
+			jugando = false;
 			for(JButton[] fila : buttons){
 				for(JButton boton : fila){
 					pintaBoton(boton, Color.cyan);
@@ -273,6 +315,7 @@ public class ClienteFlotaRMI {
 					buttons[i][j].setBorderPainted(true);
 				}
 			}
+			jugando=true;
 		} // end limpiaTablero
 
 		/**
@@ -343,44 +386,95 @@ public class ClienteFlotaRMI {
 		public void actionPerformed(ActionEvent e) {
            
 			// POR IMPLEMENTAR
-			if(quedan==0) return;
-			int i, j;
-			String text = e.getActionCommand();
-			i= Integer.parseInt(text.substring(0,1));
-			j= Integer.parseInt(text.substring(2,3));
-			JButton boton = guiTablero.buttons[i][j];
-			//System.out.println(text);
-			int res=0;
-			try {
-				res = partida.pruebaCasilla(i, j);
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			//System.out.println(res);
-			if(res == -1) {//agua
-				guiTablero.pintaBoton(boton, Color.cyan);
-			}else if(res==-2) {//tocado
-				guiTablero.pintaBoton(boton, Color.YELLOW);
-			}else if(res>=0) {//hundido
-	
-				guiTablero.pintaBoton(boton, Color.YELLOW);
+			if(quedan!=0 && jugando) {
+				int i, j;
+				String text = e.getActionCommand();
+				i= Integer.parseInt(text.substring(0,1));
+				j= Integer.parseInt(text.substring(2,3));
+				JButton boton = guiTablero.buttons[i][j];
+				//System.out.println(text);
+				int res=0;
 				try {
-					guiTablero.pintaBarcoHundido(partida.getBarco(res));
+					res = partida.pruebaCasilla(i, j);
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				quedan--;
+				//System.out.println(res);
+				if(res == -1) {//agua
+					guiTablero.pintaBoton(boton, Color.cyan);
+				}else if(res==-2) {//tocado
+					guiTablero.pintaBoton(boton, Color.YELLOW);
+				}else if(res>=0) {//hundido
+		
+					guiTablero.pintaBoton(boton, Color.YELLOW);
+					try {
+						guiTablero.pintaBarcoHundido(partida.getBarco(res));
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					quedan--;
+				}
+				disparos++;
+				guiTablero.cambiaEstado("Intentos: " + disparos + "    Barcos restantes: " + quedan);
+				if(quedan==0) {
+					guiTablero.cambiaEstado("GAME OVER en " + disparos + " disparos");
+				}
 			}
-			disparos++;
-			guiTablero.cambiaEstado("Intentos: " + disparos + "    Barcos restantes: " + quedan);
-			if(quedan==0) {
-				guiTablero.cambiaEstado("GAME OVER en " + disparos + " disparos");
-			}
+			
         } // end actionPerformed
 
 	} // end class ButtonListener
+	
+private class MultijugadorListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e){
+			try{
+				switch(e.getActionCommand()){
+				case "propon":
+					if(servidorJuego.proponPartida(jugador, callback)) {
+						System.out.println("Has propuesto una partida");
+					} else {
+						System.out.println("Ya ten una partida propuesta");
+					}
+					
+					break;
+				case "borrar":
+					if (servidorJuego.borraPartida(jugador)) {
+						System.out.println("Has borrado tu partida");
+					} else {
+						System.out.println("No tienes partidas propuestas");
+					}
+					
+					break;
+				case "lista":
+					System.out.println("Las partidas propuestas son");
+					for(String jugador:servidorJuego.listaPartidas()) {
+						System.out.print(jugador+", ");
+					}
+					System.out.println();
+					break;
+				case "aceptar":
+					System.out.println("Indica tu rival");
+					String rival = scanner.nextLine();
+					
+					if(jugador.equals(rival)) {
+						System.out.println("El jugador "+ rival+" ha intentado aceptar su propia partida");
+						
+					} else if(servidorJuego.aceptaPartida(jugador, rival)) {
+						System.out.println("La partida ha sido aceptada");
+						servidorJuego.borraPartida(jugador);
+					} else {
+					System.out.println("Tu rival no tiene partidas o ha ocurrido un error");
+					}
+					break;
+				}
+			}catch(Exception ex){
+				System.out.println("Exception MultijugadorListener.");
+			}
+		}
+	}
 
 
 

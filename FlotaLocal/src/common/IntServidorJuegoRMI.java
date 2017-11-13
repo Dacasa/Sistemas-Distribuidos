@@ -2,6 +2,7 @@ package common;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface IntServidorJuegoRMI extends Remote {
 	
@@ -36,7 +37,7 @@ public interface IntServidorJuegoRMI extends Remote {
  	 * @return							vector de cadenas con los nombres de los jugadores que han propuesto partidas
  	 * @throws	RemoteException
  	 */
-   public String[] listaPartidas() throws RemoteException;
+   public ArrayList<String> listaPartidas() throws RemoteException;
    
    /**
  	 * Acepta jugar una de las partidas propuestas
