@@ -37,7 +37,7 @@ public interface IntServidorJuegoRMI extends Remote {
  	 * @return							vector de cadenas con los nombres de los jugadores que han propuesto partidas
  	 * @throws	RemoteException
  	 */
-   public ArrayList<String> listaPartidas() throws RemoteException;
+   public String[] listaPartidas() throws RemoteException;
    
    /**
  	 * Acepta jugar una de las partidas propuestas

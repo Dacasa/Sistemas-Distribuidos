@@ -320,9 +320,11 @@ public class ClienteFlotaRMI {
 
 		/**
 		 * 	Destruye y libera la memoria de todos los componentes del frame
+		 * @throws RemoteException 
 		 */
-		public void liberaRecursos() {
+		public void liberaRecursos() throws RemoteException {
 			frame.dispose();
+			servidorJuego.borraPartida(jugador);
 		} // end liberaRecursos
 
 
@@ -363,7 +365,12 @@ public class ClienteFlotaRMI {
 				
 				break;
 			case "Salir":
-				guiTablero.liberaRecursos();
+				try {
+					guiTablero.liberaRecursos();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				break;
 			}
 		} // end actionPerformed
@@ -450,7 +457,7 @@ private class MultijugadorListener implements ActionListener{
 					break;
 				case "lista":
 					System.out.println("Las partidas propuestas son");
-					for(String jugador:servidorJuego.listaPartidas()) {
+					for(String jugador : servidorJuego.listaPartidas()) {
 						System.out.print(jugador+", ");
 					}
 					System.out.println();
